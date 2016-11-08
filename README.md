@@ -1,3 +1,14 @@
+Fork description
+================
+
+I divided this fork in branches so I can make small pull requests
+
+branch master synced with original repo 
+branch subscriptions adds support to the subscriptions Woocommerce extension (see readme there for more details)
+branch translation-pt adds translation file to portuguese
+branch error-missing-translation suggests a fix to avoid a fatal error when translation is missing
+branch donarchange is the sum of all branches and is what we are using in our project
+
 Conekta Woocommerce v.0.4.3
 =======================
 
