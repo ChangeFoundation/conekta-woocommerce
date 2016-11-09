@@ -11,7 +11,13 @@
   <label for="conekta-card-number"><?php echo $this->lang_options["card_number"]; ?><span class="required">*</span></label>
   <input id="conekta-card-number" class="input-text" type="text" data-conekta="card[number]" />
 </div>
-
+<script>
+jQuery( function( $ ) {
+    $("#conekta-card-number").inputmask({
+        mask: '9999.9999.9999.9999',
+    });
+});
+</script>
 <div class="form-row form-row-wide">
   <label for="conekta-card-name"> <?php echo $this->lang_options["card_name"]; ?><span class="required">*</span></label>
   <input id="conekta-card-name" type="text" data-conekta="card[name]" class="input-text" />
