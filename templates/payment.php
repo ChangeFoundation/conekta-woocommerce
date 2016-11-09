@@ -13,9 +13,9 @@
 </div>
 <script>
 jQuery( function( $ ) {
-    $("#conekta-card-number").inputmask({
-        mask: '9999.9999.9999.9999',
-    });
+    //$("#conekta-card-number").inputmask({
+    //    mask: '9999.9999.9999.9999',
+    //});
 });
 </script>
 <div class="form-row form-row-wide">
