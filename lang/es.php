@@ -20,7 +20,7 @@
 			"11" => "11 - Noviembre",
 			"12" => "12 - Diciembre",
 		),
-		"card_name" => "Nombre del tarjetahabiente",
+		"card_name" => "Nombre del titular de la tarjeta",
 		"card_number" => "Número de la tarjeta",
 		"month_options" => "Mes de expiración",
 		"year_options" => "Año de expiración",
