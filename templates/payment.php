@@ -49,7 +49,7 @@
 
 <p class="form-row form-row-first">
     <?php // função de é uma funçaõ de tradução do tema donarchange ?>
-    <label for="conekta-card-cvc"><?php _de('CVC - Código de Seguridad'); ?><span class="required">*</span> <a class="cvc_helper"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/help.png" style="cursor: pointer;" /></a> </label>
+    <label for="conekta-card-cvc"><?php _de('CVC - Los 3 dígitos detrás de la tarjeta'); ?><span class="required">*</span>  </label>
     <input id="conekta-card-cvc" class="input-text" type="text" maxlength="4" data-conekta="card[cvc]" value=""  style="border-radius:6px"/>
 </p>
 
