@@ -54,7 +54,8 @@ function build_details($data, $line_items)
             "email" => $data['card']['email'],
             "country" => $data['card']['address_country'],
             "state" => $data['card']['address_state']
-            ),
+            )/*,
+        
         "shipment"  => array(
             "carrier"=> (empty($data['shipping_carrier']) ? "default" : $data['shipping_carrier']),
             "service"=> (empty($data['shipping_method']) ? "default" : $data['shipping_method']),
@@ -69,6 +70,7 @@ function build_details($data, $line_items)
                 "state" => $data['card']['shipping_address_state']
                 )
             )
+            */
         );
     
         // manually compose custom fields given from getRequestData
