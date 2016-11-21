@@ -135,7 +135,9 @@ class WC_Conekta_Card_Gateway extends WC_Conekta_Plugin
         wp_enqueue_script('tokenize', WP_PLUGIN_URL."/".plugin_basename(dirname(__FILE__)).'/assets/js/tokenize.js', '', '1.0', true);
 
         $params = array(
-            'public_key' => $this->publishable_key
+            'public_key' => $this->publishable_key,
+            'translations' => include( get_stylesheet_directory() . '/inc/translations.php' ),
+            'wp_locale' => get_locale()
         );
 
         wp_localize_script('tokenize', 'wc_conekta_params', $params);
@@ -211,7 +213,7 @@ class WC_Conekta_Card_Gateway extends WC_Conekta_Plugin
             return true;
 
         } catch(Conekta_Error $e) {
-            $description = $e->message_to_purchaser;
+            $description = _d($e->message_to_purchaser);
             global $wp_version;
             if (version_compare($wp_version, '4.1', '>=')) {
                 wc_add_notice(__('Error: ', 'woothemes') . $description , $notice_type = 'error');
