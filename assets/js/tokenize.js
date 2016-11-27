@@ -3,8 +3,22 @@ jQuery(document).ready(function($) {
 
 	var $form = $('form.checkout,form#order_review');
 
+    function donarchange_translate(string) {
+        
+        if (wc_conekta_params.wp_locale != 'pt_BR')
+            return string;
+        
+        var t = wc_conekta_params.translations;
+        
+        if (t[string])
+            return t[string];
+            
+        return string
+        
+    }
+    
 	var conektaErrorResponseHandler = function(response) {
-		$form.find('.payment-errors').text(response.message_to_purchaser);
+		$form.find('.payment-errors').text( donarchange_translate(response.message_to_purchaser) );
 		$form.unblock();
 	};
 
