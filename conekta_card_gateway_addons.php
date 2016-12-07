@@ -145,12 +145,12 @@ class WC_Conekta_Card_Gateway_Addons extends WC_Conekta_Card_Gateway {
             global $wp_version;
             if (version_compare($wp_version, '4.1', '>=')) {
                 //wc_add_notice(__('Error: ', 'woothemes') . $description , $notice_type = 'error');
-                $order->add_order_note( __('Error: ', 'woothemes') . $description );
+                //$order->add_order_note( __('Error: ', 'woothemes') . $description );
             } else {
                 error_log('Gateway Error:' . $description . "\n");
                 $woocommerce->add_error(__('Error: ', 'woothemes') . $description);
             }
-            
+            $this->transactionErrorMessage = $e->message;
             $this->markAsFailedPayment();
             
             return false;

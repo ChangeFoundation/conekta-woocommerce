@@ -188,6 +188,8 @@ class WC_Conekta_Card_Gateway extends WC_Conekta_Plugin
 
         $data = getRequestData($this->order);
         
+        $this->order->add_order_note( 'Enviando cobrança para Conekta' );
+        
         try {
 
             $line_items = array();
@@ -221,6 +223,7 @@ class WC_Conekta_Card_Gateway extends WC_Conekta_Plugin
                 error_log('Gateway Error:' . $description . "\n");
                 $woocommerce->add_error(__('Error: ', 'woothemes') . $description);
             }
+            $this->transactionErrorMessage = $e->message;
             return false;
         }
     }
