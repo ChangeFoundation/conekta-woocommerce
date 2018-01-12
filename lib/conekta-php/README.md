@@ -1,7 +1,6 @@
+![README Cover Image](readme_cover.png)
 
-![alt tag](https://raw.github.com/conekta/conekta-php/master/readme_files/cover.png)
-
-# Conekta PHP v.1.9.9
+# Conekta PHP v.3.3.0
 
 This is a php library that allows interaction with https://api.conekta.io API.
 
@@ -17,70 +16,108 @@ To get started, add the following to your PHP script:
 
 You can also install this library with composer:
 
-  require: "conekta/conekta-php": "dev-master"
+  require: "conekta/conekta-php": "3.3.0"
 
 ## Usage
-```php
-Conekta::setApiKey('1tv5yJp3xnVZ7eK67m4h');
-try {
-  $charge = Conekta_Charge::create(array(
-    "amount"=> 51000,
-    "currency"=> "MXN",
-    "description"=> "Pizza Delivery",
-    "reference_id"=> "orden_de_id_interno",
-    "card"=> $_POST['conektaTokenId']
-    //"tok_a4Ff0dD2xYZZq82d9"
-  ));
-} catch (Conekta_Error $e) {
-  echo $e->getMessage();
-  //El pago no pudo ser procesado
-}
 
-{
-  "id": "5286828b8ee31e64b7001739",
-  "livemode": false,
-  "created_at": 1384546955,
-  "status": "paid",
-  "currency": "MXN",
-  "description": "Some desc",
-  "reference_id": null,
-  "failure_code": null,
-  "failure_message": null,
-  "object": "charge",
-  "amount": 2000,
-  "fee": 371,
-  "payment_method": {
-    "name": "Mario Moreno",
-    "exp_month": "05",
-    "exp_year": "15",
-    "auth_code": "861491",
-    "object": "card_payment",
-    "last4": "4242",
-    "brand": "visa"
-  },
-  "details": {
-    "name": null,
-    "phone": null,
-    "email": null,
-    "line_items": []
-  }
+```php
+setApiKey();
+$valid_order =
+    array(
+        'line_items'=> array(
+            array(
+                'name'        => 'Box of Cohiba S1s',
+                'description' => 'Imported From Mex.',
+                'unit_price'  => 20000,
+                'quantity'    => 1,
+                'sku'         => 'cohb_s1',
+                'category'    => 'food',
+                'tags'        => array('food', 'mexican food')
+                )
+           ),
+          'currency'    => 'mxn',
+          'metadata'    => array('test' => 'extra info'),
+          'charges'     => array(
+              array(
+                  'payment_source' => array(
+                      'type'       => 'oxxo_cash',
+                      'expires_at' => strtotime(date("Y-m-d H:i:s")) + "36000"
+                   ),
+                   'amount' => 20000
+                )
+            ),
+            'currency'      => 'mxn',
+            'customer_info' => array(
+                'name'  => 'John Constantine',
+                'phone' => '+5213353319758',
+                'email' => 'hola@hola.com'
+            )
+        );
+
+try {
+  $order = \Conekta\Order::create($valid_order);
+} catch (\Conekta\ProcessingError $e){ 
+  echo $e->getMessage();
+} catch (\Conekta\ParameterValidationError $e){
+  echo $e->getMessage();
+} finally (\Conekta\Handler $e){
+  echo $e->getMessage();
 }
 ```
 
 ## Documentation
 
-Please see https://www.conekta.io/docs/api for up-to-date documentation.
+Please see [developers.conekta.com/api](https://developers.conekta.com/api) for up-to-date documentation.
 
-## Tests
+## Run Tests
 
-In order to run tests you have to install SimpleTest (https://github.com/simpletest/simpletest) via Composer (http://getcomposer.org/) (recommended way):
+Unit test based on php library PHPUnit to describe better memory usage, test status and test results.
 
-    composer.phar update --dev
+### Requeriments
+
+PHPUnit 6.1 requires PHP 7; using the latest version of PHP is highly recommended.
+
+### Installation
+for better usage install phpunit globally
+
+```
+$ wget https://phar.phpunit.de/phpunit-6.1.phar
+
+$ chmod +x phpunit-6.1.phar
+
+$ sudo mv phpunit-6.1.phar /usr/local/bin/phpunit
+
+$ phpunit --version
+
+ej. output
+PHPUnit 6.1.1 by Sebastian Bergmann and contributors.
+
+```
+
+php version used
+
+```
+PHP 7.0.17 (cli)
+```
 
 Run test suite:
 
-    php ./test/Conekta.php
+```
+phpunit test/Conekta-x.0
+```
 
-License
--------
-Developed by [Conekta](https://www.conekta.io). Available with [MIT License](LICENSE).
+_note:_ for this phpunit version (6.1.x) only php 7 is supported for older php versions see phpunit <a href="https://phpunit.de/"> documentation</a>
+
+
+## License
+
+Developed in Mexico by [Conekta](https://www.conekta.com). Available with [MIT License](LICENSE).
+
+***
+
+
+## We are always hiring!
+
+If you are a comfortable working with a range of backend languages (Java, Python, Ruby, PHP, etc) and frameworks, you have solid foundation in data structures, algorithms and software design with strong analytical and debugging skills.
+Send your CV, github to quieroser@conekta.io
+

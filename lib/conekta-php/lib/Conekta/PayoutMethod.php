@@ -1,30 +1,34 @@
 <?php
-class Conekta_Payout_Method extends Conekta_Resource
+
+namespace Conekta;
+
+use \Conekta\Resource;
+use \Conekta\Lang;
+use \Conekta\Exceptions;
+use \Conekta\Conekta;
+
+class PayoutMethod extends Resource
 {
-	public function instanceUrl() 
-	{
-		$id = $this->id;
-		if (!$id) 
-		{
-			throw new Conekta_Error(
-			LANG::translate('error.resource.id', array('RESOURCE'=>get_class()), LANG::EN),
-			LANG::translate('error.resource.id_purchaser', null, Conekta::$locale)
-			);
-		}
-		$class = get_class($this);
-		$base = $this->classUrl($class);
-		$extn = urlencode($id);
-		$payeeUrl = $this->payee->instanceUrl();
-		return "$payeeUrl$base/$extn";  
-	}
-	
-	public function update($params=null)
-	{
-		return self::_update($params);
-	}
-	
-	public function delete() {
-		return self::_delete('payee', 'payout_methods');
-	}
+  public function instanceUrl()
+  {
+      $this->apiVersion = Conekta::$apiVersion;
+      $id = $this->id;
+      parent::idValidator($id);
+      $class = get_class($this);
+      $base = $this->classUrl($class);
+      $extn = urlencode($id);
+      $payeeUrl = $this->payee->instanceUrl();
+      
+      return $payeeUrl . $base . "/{$extn}";
+  }
+
+  public function update($params = null)
+  {
+      return parent::_update($params);
+  }
+
+  public function delete()
+  {
+      return parent::_delete('payee', 'payout_methods');
+  }
 }
-?>

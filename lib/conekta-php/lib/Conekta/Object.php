@@ -1,82 +1,91 @@
 <?php
-class Conekta_Object extends ArrayObject
+
+namespace Conekta;
+
+use \ArrayObject;
+use \Conekta\Util;
+
+class Object extends ArrayObject
 {
-	
-	protected $_values;
-	
-	public function __construct($id=null)
-	{
-		$this->_values = array();
-		$this->id = $id;
-	}
-	
-	public function _setVal($k,$v)
-	{
-		$this->_values[$k] = $v;
-	}
-	
-	public function _unsetKey($k)
-	{
-		unset($this->_values[$k]);
-	}
-	
-	public function loadFromArray($values)
-	{
-		foreach ($values as $k => $v) {
-			if (is_array($v)) {
-				$v = Conekta_Util::convertToConektaObject($v);
-			}
-			if (strpos(get_class($this), "Conekta_Object") !== false) {
-				$this[$k] = $v;
-			} else {
-				$this->$k = $v;
-			}
-			$this->_setVal($k,$v);
-		}
-	}
-	
-	public function __toJSON()
-	{
-		if (defined('JSON_PRETTY_PRINT')) 
-		{
-			return json_encode($this->_toArray(), JSON_PRETTY_PRINT);
-		} 
-		else 
-		{
-			return json_encode($this->_toArray());
-		}
-	}
-	
-	protected function _toArray() {
-		$array = array();
-		foreach ($this->_values as $k => $v) {
-			if (is_object($v) == true && strpos(get_class($v), "Conekta_") !== false) {
-				if (empty($v->_values) != true) {
-					$array[$k] = $v->_toArray();
-				}
-			} else {
-				$array[$k] = $v;
-			}
-		}
-		return $array;
-	}
-	
-	public function __toString()
-	{
-		return $this->__toJSON();
-	}
-	
-	//public function shiftArray($array, $k) {
-		//unset($array[$k]);
-		//end($array);
-		//$lastKey = key($array);
-		
-		//for ($i = $k; $i < $lastKey; ++ $i) {
-			//$array[$i] = $array[$i+1];
-			//unset($array[$i+1]);
-		//}
-		
-		//return $array;
-	//}
+  protected $_values;
+
+  public function __construct($id = null)
+  {
+    $this->_values = array();
+    $this->id = $id;
+  }
+
+  public function _setVal($object, $val)
+  {
+    $this->_values[$object] = $val;
+    $this[$object] = $val;
+  }
+
+  public function _unsetKey($object)
+  {
+    unset($this->_values[$object]);
+    unset($object);
+  }
+
+  public function loadFromArray($values)
+  {
+    foreach ($values as $object => $val) {
+      if (is_array($val)) {
+        $val = Util::convertToConektaObject($val);
+      }
+      if (strpos(get_class($this), 'Object') !== false) {
+        $this[$object] = $val;
+      } else {
+        if (strpos($object, 'url') !== false && strpos(get_class($this), 'Webhook') !== false) {
+          $object = "webhook_url";
+        }
+        $this->$object = $val;
+        if ($object == "metadata") {
+          $this->metadata = new Object();
+          if (is_array($val) || is_object($val)) {
+            foreach ($val as $object2 => $val2) {
+              $this->metadata->$object2 = $val2;
+              $this->metadata->_setVal($object2, $val2);
+            }
+          }
+        }
+      }
+      $this->_setVal($object, $val);
+    }
+  }
+
+  public function __toJSON()
+  {
+    if (defined('JSON_PRETTY_PRINT')) {
+      return json_encode($this->_toArray(), JSON_PRETTY_PRINT);
+    } else {
+      return json_encode($this->_toArray());
+    }
+  }
+
+  protected function _toArray()
+  {
+    $array = array();
+    foreach ($this->_values as $object => $val) {
+      if (is_object($val) == true && get_class($val) != '') {
+        if (empty($val->_values) != true) {
+          $array[$object] = $val->_toArray();
+        }
+      } else {
+        $array[$object] = $val;
+      }
+    }
+
+    return $array;
+  }
+
+  public function __toString()
+  {
+    return $this->__toJSON();
+  }
+
+  public function offsetGet($offset)
+  {
+    return isset($this->_values[$offset]) ? $this->_values[$offset] : null;
+  }
 }
-?>
